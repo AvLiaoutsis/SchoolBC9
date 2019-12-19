@@ -38,5 +38,7 @@ namespace Project1st
         public static List<Course> courses = new List<Course>();
         public static List<Student> studentMoreCourse = new List<Student>();
         public static List<Student> studentAssignmentGivenWeek = new List<Student>();
+
+
     }
 }

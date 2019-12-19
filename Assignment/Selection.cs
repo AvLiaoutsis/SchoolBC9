@@ -11,6 +11,7 @@ namespace Project1st
     {
         public static void ShowStudentsDB()
         {
+            int counter = 0;
             Console.Clear();
             SqlConnection sqlConnection = Database.ConnectDb();
             using (sqlConnection)
@@ -25,6 +26,7 @@ namespace Project1st
 
                     while (readerStudents.Read())
                     {
+                        counter++;
                         int id = readerStudents.GetInt32(0);
                         string firstName = readerStudents.GetString(1);
                         string lastName = readerStudents.GetString(2);
@@ -33,10 +35,18 @@ namespace Project1st
                         Student student = new Student(id,firstName, lastName, dateOfBirth, tuitionFees);
                         students.Add(student);
                     }
-                    foreach (var student in students)
+                    if (counter>0)
                     {
-                        Console.WriteLine(student);
+                        foreach (var student in students)
+                        {
+                            Console.WriteLine(student);
+                        }
                     }
+                    else
+                    {
+                        Console.WriteLine("There are no Students Registered in Database!");
+                    }
+
                 }
                 catch (Exception ex)
                 {
@@ -51,6 +61,7 @@ namespace Project1st
         }
         public static void ShowTrainersDB()
         {
+            int counter = 0;
             SqlConnection sqlConnection = Database.ConnectDb();
             Console.Clear();
 
@@ -62,8 +73,10 @@ namespace Project1st
                     SqlCommand cmdTrainers = new SqlCommand("SELECT * FROM Trainer", sqlConnection);
                     SqlDataReader readerTrainers = cmdTrainers.ExecuteReader();
 
+
                     while (readerTrainers.Read())
                     {
+                        counter++;
                         int id = readerTrainers.GetInt32(0);
                         string firstName = readerTrainers.GetString(1);
                         string lastName = readerTrainers.GetString(2);
@@ -71,10 +84,18 @@ namespace Project1st
                         Trainer trainer = new Trainer(id,firstName, lastName, subject);
                         trainers.Add(trainer);
                     }
-                    foreach (var trainer in trainers)
+                    if (counter>0)
                     {
-                        Console.WriteLine(trainer);
+                        foreach (var trainer in trainers)
+                        {
+                            Console.WriteLine(trainer);
+                        }
                     }
+                    else
+                    {
+                        Console.WriteLine("There are no Trainers Registered in Database!");
+                    }
+
                 }
                 catch (Exception ex)
                 {
@@ -89,6 +110,7 @@ namespace Project1st
         }
         public static void ShowAssignmnetsDB()
         {
+            int counter = 0;
             SqlConnection sqlConnection = Database.ConnectDb();
             Console.Clear();
 
@@ -104,6 +126,7 @@ namespace Project1st
 
                     while (readerAssignments.Read())
                     {
+                        counter++;
                         int id = readerAssignments.GetInt32(0);
                         string title = readerAssignments.GetString(1);
                         string description = readerAssignments.GetString(2);
@@ -111,11 +134,17 @@ namespace Project1st
                         Assignment assignment = new Assignment(id,title, description, subDateTime);
                         assignments.Add(assignment);
                     }
-                    foreach (var assignment in assignments)
+                    if(counter > 0)
                     {
-                        Console.WriteLine(assignment);
+                        foreach (var assignment in assignments)
+                        {
+                            Console.WriteLine(assignment);
+                        }
                     }
-
+                    else
+                    {
+                        Console.WriteLine("There are no Assignments Registered in Database!");
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -130,6 +159,7 @@ namespace Project1st
         }
         public static void ShowCoursesDB()
         {
+            int counter = 0;
             SqlConnection sqlConnection = Database.ConnectDb();
             Console.Clear();
             using (sqlConnection)
@@ -144,6 +174,7 @@ namespace Project1st
 
                     while (readerCourses.Read())
                     {
+                        counter++;
                         int id = readerCourses.GetInt32(0);
                         string title = readerCourses.GetString(1);
                         string stream = readerCourses.GetString(2);
@@ -153,9 +184,16 @@ namespace Project1st
                         Course course = new Course(id,title, stream, type, startDate, endDate);
                         courses.Add(course);
                     }
-                    foreach (var course in courses)
+                    if (counter > 0)
                     {
-                        Console.WriteLine(course);
+                        foreach (var course in courses)
+                        {
+                            Console.WriteLine(course);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("There are no Courses Registered in Database!");
                     }
                 }
                 catch (Exception ex)
@@ -198,6 +236,10 @@ namespace Project1st
                             Console.WriteLine($"Student Name: {readerStudentsCourses.GetString(0)}\nCourse Title: {readerStudentsCourses.GetString(1)} \n");
                         }
                     }
+                    else
+                    {
+                        Console.WriteLine("There are no Student Per Course Entry Registered in Database!");
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -239,6 +281,10 @@ namespace Project1st
                             Console.WriteLine($"Trainer Name: {readerTrainersCourses.GetString(0)}\nCourse Title: {readerTrainersCourses.GetString(1)} \n");
                         }
                     }
+                    else 
+                    {
+                        Console.WriteLine("There are no Trainer Per Course Entry Registered in Database!");
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -272,12 +318,16 @@ namespace Project1st
                         "ON AssignmentRelation.CourseID = Course.ID ", sqlConnection);
                     var checker = cmdAssignmentCourses.ExecuteNonQuery();
                     SqlDataReader readerAssignmentCourses = cmdAssignmentCourses.ExecuteReader();
-                    if (checker != 0)
+                    if (checker > 0)
                     {
                         while (readerAssignmentCourses.Read())
                         {
                             Console.WriteLine($"Assignment Title: {readerAssignmentCourses.GetString(0)}\nCourse Title: {readerAssignmentCourses.GetString(1)} \n");
                         }
+                    }
+                    else
+                    {
+                        Console.WriteLine("There are no Assignment Per Course Entry Registered in Database!");
                     }
                 }
                 catch (Exception ex)
@@ -315,12 +365,16 @@ namespace Project1st
                         );
                     var checker = cmdStudentAssignmentCourses.ExecuteNonQuery();
                     SqlDataReader readerStudentsAssignmentCourse = cmdStudentAssignmentCourses.ExecuteReader();
-                    if (checker != 0)
+                    if (checker > 0)
                     {
                         while (readerStudentsAssignmentCourse.Read())
                         {
                             Console.WriteLine($"Student Name: {readerStudentsAssignmentCourse.GetString(0)}\n Assignment Title:{readerStudentsAssignmentCourse.GetString(1)}\n Course Title:{readerStudentsAssignmentCourse.GetString(2)} \n");
                         }
+                    }
+                    else
+                    {
+                        Console.WriteLine("There are no Student Per Assignment Per Course Entry Registered in Database!");
                     }
                 }
                 catch (Exception ex)
@@ -359,7 +413,7 @@ namespace Project1st
                     var checker = cmdStudentCoursesMore.ExecuteNonQuery();
 
                     SqlDataReader readerStudentCoursesMore = cmdStudentCoursesMore.ExecuteReader();
-                    if (checker != 0)
+                    if (checker > 0)
                     {
                         while (readerStudentCoursesMore.Read())
                         {
