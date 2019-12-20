@@ -209,6 +209,7 @@ namespace Project1st
         }
         public static void ShowStudentsPerCourseDB()
         {
+            int counter = 0;
             SqlConnection sqlConnection = Database.ConnectDb();
             Console.Clear();
             using (sqlConnection)
@@ -227,16 +228,13 @@ namespace Project1st
                         "INNER JOIN Course " +
                         "ON StudentTakingCourse.CourseID = Course.ID", sqlConnection
                         );
-                    var checker = cmdStudentsCourses.ExecuteNonQuery();
                     SqlDataReader readerStudentsCourses = cmdStudentsCourses.ExecuteReader();
-                    if (checker != 0)
+                    while (readerStudentsCourses.Read())
                     {
-                        while (readerStudentsCourses.Read())
-                        {
-                            Console.WriteLine($"Student Name: {readerStudentsCourses.GetString(0)}\nCourse Title: {readerStudentsCourses.GetString(1)} \n");
-                        }
+                        counter++;
+                        Console.WriteLine($"Student Name: {readerStudentsCourses.GetString(0)}\nCourse Title: {readerStudentsCourses.GetString(1)} \n");
                     }
-                    else
+                    if (counter <= 0)
                     {
                         Console.WriteLine("There are no Student Per Course Entry Registered in Database!");
                     }
@@ -254,6 +252,7 @@ namespace Project1st
         }
         public static void ShowTrainersPerCourseDB()
         {
+            int counter = 0;
             SqlConnection sqlConnection = Database.ConnectDb();
             Console.Clear();
             using (sqlConnection)
@@ -272,16 +271,13 @@ namespace Project1st
                         "INNER JOIN Course " +
                         "ON TrainerTakingCourse.CourseID = Course.ID", sqlConnection
                         );
-                    var checker = cmdTrainersCourses.ExecuteNonQuery();
                     SqlDataReader readerTrainersCourses = cmdTrainersCourses.ExecuteReader();
-                    if (checker != 0)
+                    while (readerTrainersCourses.Read())
                     {
-                        while (readerTrainersCourses.Read())
-                        {
-                            Console.WriteLine($"Trainer Name: {readerTrainersCourses.GetString(0)}\nCourse Title: {readerTrainersCourses.GetString(1)} \n");
-                        }
+                        counter++;
+                        Console.WriteLine($"Trainer Name: {readerTrainersCourses.GetString(0)}\nCourse Title: {readerTrainersCourses.GetString(1)} \n");
                     }
-                    else 
+                    if(counter <=0)
                     {
                         Console.WriteLine("There are no Trainer Per Course Entry Registered in Database!");
                     }
@@ -299,6 +295,7 @@ namespace Project1st
         }
         public static void ShowAssignmentPerCourseDB()
         {
+            int counter = 0;
             SqlConnection sqlConnection = Database.ConnectDb();
             Console.Clear();
             using (sqlConnection)
@@ -316,16 +313,13 @@ namespace Project1st
                         "ON Assignment.ID = AssignmentRelation.AssignmentID " +
                         "INNER JOIN Course " +
                         "ON AssignmentRelation.CourseID = Course.ID ", sqlConnection);
-                    var checker = cmdAssignmentCourses.ExecuteNonQuery();
                     SqlDataReader readerAssignmentCourses = cmdAssignmentCourses.ExecuteReader();
-                    if (checker > 0)
+                    while (readerAssignmentCourses.Read())
                     {
-                        while (readerAssignmentCourses.Read())
-                        {
-                            Console.WriteLine($"Assignment Title: {readerAssignmentCourses.GetString(0)}\nCourse Title: {readerAssignmentCourses.GetString(1)} \n");
-                        }
+                        counter++;
+                        Console.WriteLine($"Assignment Title: {readerAssignmentCourses.GetString(0)}\nCourse Title: {readerAssignmentCourses.GetString(1)} \n");
                     }
-                    else
+                    if(counter<=0)
                     {
                         Console.WriteLine("There are no Assignment Per Course Entry Registered in Database!");
                     }
@@ -343,6 +337,7 @@ namespace Project1st
         }
         public static void ShowStudentPerAssignmentPerCourseDB()
         {
+            int counter = 0;
             SqlConnection sqlConnection = Database.ConnectDb();
             Console.Clear();
             using (sqlConnection)
@@ -363,16 +358,13 @@ namespace Project1st
                         "INNER JOIN Student " +
                         "ON AssignmentRelation.StudentID = StudentID", sqlConnection
                         );
-                    var checker = cmdStudentAssignmentCourses.ExecuteNonQuery();
                     SqlDataReader readerStudentsAssignmentCourse = cmdStudentAssignmentCourses.ExecuteReader();
-                    if (checker > 0)
+                    while (readerStudentsAssignmentCourse.Read())
                     {
-                        while (readerStudentsAssignmentCourse.Read())
-                        {
-                            Console.WriteLine($"Student Name: {readerStudentsAssignmentCourse.GetString(0)}\n Assignment Title:{readerStudentsAssignmentCourse.GetString(1)}\n Course Title:{readerStudentsAssignmentCourse.GetString(2)} \n");
-                        }
+                        counter++;
+                        Console.WriteLine($"Student Name: {readerStudentsAssignmentCourse.GetString(0)}\n Assignment Title:{readerStudentsAssignmentCourse.GetString(1)}\n Course Title:{readerStudentsAssignmentCourse.GetString(2)} \n");
                     }
-                    else
+                    if(counter<=0)
                     {
                         Console.WriteLine("There are no Student Per Assignment Per Course Entry Registered in Database!");
                     }
@@ -391,7 +383,7 @@ namespace Project1st
         public static void ShowStudentMoreCourseDB()
         {
             SqlConnection sqlConnection = Database.ConnectDb();
-
+            int counter = 0;
             using (sqlConnection)
             {
                 try
@@ -410,15 +402,16 @@ namespace Project1st
                         "GROUP BY Student.FirstName " +
                         "HAVING COUNT(Course.ID) > 1; ", sqlConnection
                         );
-                    var checker = cmdStudentCoursesMore.ExecuteNonQuery();
 
                     SqlDataReader readerStudentCoursesMore = cmdStudentCoursesMore.ExecuteReader();
-                    if (checker > 0)
+                    while (readerStudentCoursesMore.Read())
                     {
-                        while (readerStudentCoursesMore.Read())
-                        {
-                            Console.WriteLine("Student Name: " + readerStudentCoursesMore.GetString(0) + "\n" + "Number of Courses: " + readerStudentCoursesMore.GetInt32(1) + "\n");
-                        }
+                        counter++;
+                        Console.WriteLine("Student Name: " + readerStudentCoursesMore.GetString(0) + "\n" + "Number of Courses: " + readerStudentCoursesMore.GetInt32(1) + "\n");
+                    }
+                    if (counter <= 0)
+                    {
+                        Console.WriteLine("There are no Student who has taken more than one Course!");
                     }
                 }
                 catch (Exception ex)
